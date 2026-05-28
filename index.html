@@ -303,7 +303,7 @@
             grid.innerHTML += `
                 <div class="card">
                     <h3>${product.name}</h3>
-                    <div class="price">${product.price.toLocaleString()} $</div>
+                    <div class="price">kč{product.price.toLocaleString()} $</div>
                     <div class="status ${statusClass}">${statusText}</div>
                     <div class="controls">
                         <input type="number" id="qty-${product.id}" min="1" max="${product.stock}" value="1" ${disabled}>
