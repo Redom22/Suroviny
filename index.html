@@ -25,7 +25,7 @@
         .vedeni-box { background: white; max-width: 600px; margin: 0 auto; padding: 2rem; border-radius: 12px; text-align: center; border-top: 5px solid var(--primary); }
         .vedeni-info { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: white; padding: 2rem; border-radius: 16px; width: 90%; max-width: 500px; }
+        .modal { background: white; padding: 2rem; border-radius: 16px; width: 90%; max-width: 500px; text-align: center; }
         .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .hidden { display: none !important; }
     </style>
@@ -63,11 +63,21 @@
 <div id="cart-modal" class="modal-overlay">
     <div class="modal">
         <form id="checkout-form" onsubmit="submitOrder(event)">
-            <input type="text" id="fname" placeholder="Jméno" required style="width:100%; margin-bottom:10px; padding:10px;">
-            <input type="text" id="postic" placeholder="E-mail (končící .ic)" required style="width:100%; margin-bottom:10px; padding:10px;">
-            <input type="text" id="phone" placeholder="Telefon (přesně 6 číslic)" required style="width:100%; margin-bottom:15px; padding:10px;">
-            <button type="submit" class="submit-btn">Odeslat objednávku</button>
-            <button type="button" onclick="closeCart()" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">Zavřít</button>
+            <div id="form-fields">
+                <input type="text" id="fname" placeholder="Jméno" required style="width:100%; margin-bottom:10px; padding:10px;">
+                <input type="text" id="postic" placeholder="E-mail (končící .ic)" required style="width:100%; margin-bottom:10px; padding:10px;">
+                <input type="text" id="phone" placeholder="Telefon (přesně 6 číslic)" required style="width:100%; margin-bottom:15px; padding:10px;">
+                <button type="submit" class="submit-btn">Odeslat objednávku</button>
+                <button type="button" onclick="closeCart()" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">Zavřít</button>
+            </div>
+            
+            <div id="success-message" class="hidden">
+                <h2 style="color: var(--success); margin-bottom: 10px;">Objednávka úspěšně odeslána!</h2>
+                <p>Vaše číslo objednávky je: <strong id="order-id-display"></strong></p>
+                <p style="margin: 15px 0;">Tohle číslo si uložte pro lepší jednání.</p>
+                <p style="font-size: 0.9rem; color: #555;">Při zrušení nebo nějakém doplnění kontaktujte nás na postu: <strong>noemi.graziani@post.ic</strong></p>
+                <button type="button" class="submit-btn" style="margin-top:20px;" onclick="location.reload()">Zavřít</button>
+            </div>
         </form>
     </div>
 </div>
@@ -110,13 +120,26 @@
         e.preventDefault();
         const postic = document.getElementById('postic').value;
         const phone = document.getElementById('phone').value;
+        const orderId = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
 
-        // Validace
         if (!postic.endsWith('.ic')) return alert('E-mail musí končit .ic');
         if (!/^\d{6}$/.test(phone)) return alert('Telefon musí obsahovat přesně 6 číslic');
 
-        alert('Objednávka odeslána!');
-        closeCart();
+        // Odeslání na Discord
+        try {
+            await fetch(DISCORD_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: `Nová objednávka: ${orderId}\nZákazník: ${document.getElementById('fname').value}\nEmail: ${postic}\nTel: ${phone}` })
+            });
+
+            // Přepnutí na úspěšnou obrazovku
+            document.getElementById('form-fields').classList.add('hidden');
+            document.getElementById('order-id-display').innerText = orderId;
+            document.getElementById('success-message').classList.remove('hidden');
+        } catch (err) {
+            alert('Chyba při odesílání.');
+        }
     }
 
     render();
