@@ -5,93 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graz Groupe | Suroviny a Výrobky</title>
     <style>
+        /* Modrobílý moderní design - proměnné */
         :root {
-            --primary: #1e40af; --primary-light: #3b82f6; --bg: #f0f5f9;
-            --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
-            --border: #e2e8f0; --success: #10b981; --danger: #ef4444;
+            --primary: #1e40af; /* Tmavší modrá */
+            --primary-light: #3b82f6; /* Světlejší modrá */
+            --bg: #f0f5f9; /* Velmi světlá modro-šedá pro pozadí */
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
-        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); }
-        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; text-transform: uppercase; }
-        .logo span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 0.3rem 0.9rem; border-radius: 8px; font-size: 1.5rem; font-weight: 900; }
-        .tab-content { display: none; }
+
+        /* Hlavička a navigace */
+        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); gap: 1rem; flex-wrap: wrap; }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; text-transform: uppercase; letter-spacing: -0.5px; }
+        .logo span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 0.3rem 0.9rem; border-radius: 8px; font-size: 1.5rem; font-weight: 900; box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2); }
+        
+        .header-right { display: flex; align-items: center; gap: 1.5rem; }
+        
+        .help-notice { font-size: 0.85rem; font-weight: 600; color: var(--primary); background: #e0f2fe; padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #bae6fd; display: flex; align-items: center; gap: 0.5rem; animation: arrowPulse 1.5s infinite ease-in-out; }
+        
+        @keyframes arrowPulse { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+
+        nav { display: flex; gap: 0.5rem; align-items: center; }
+        nav button { background: transparent; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; transition: all 0.3s; }
+        nav button:hover { background: #e0f2fe; color: var(--primary); }
+        nav button.active { background: var(--primary); color: white; }
+        
+        .cart-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--primary-light) !important; color: white !important; }
+        .cart-btn:hover { background: var(--primary) !important; }
+        .cart-icon { width: 20px; height: 20px; fill: currentColor; }
+        .cart-badge { background: white; color: var(--primary); padding: 0.1rem 0.4rem; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+
+        /* Hlavní obsah */
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
         .tab-content.active { display: block; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mřížka produktů */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; transition: transform 0.2s; border-top: 4px solid var(--primary-light); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .price { font-size: 1.4rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.5rem; }
+        .status { font-weight: 600; font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .status.available { color: var(--success); }
+        .status.sold-out { color: var(--danger); }
+
+        .controls { display: flex; gap: 0.5rem; margin-top: auto; }
+        .controls input { width: 70px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; text-align: center; font-weight: bold; outline: none; }
+        .controls button { flex: 1; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 16px; width: 90%; max-width: 650px; position: relative; }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--bg); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
-        .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 16px; width: 90%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
+        
+        .order-number-large { font-size: 1.8rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg); border-radius: 8px; border: 2px dashed var(--primary-light); }
+        .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+        
+        form { margin-top: 2rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        input[type="text"] { padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; }
+        
+        .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1.2rem; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 1rem; }
         .hidden { display: none !important; }
-        .success-box { text-align: center; padding: 2rem; }
-        .success-box h2 { color: var(--success); margin-bottom: 1rem; }
+        
+        #order-success-msg { text-align: center; padding: 2rem; }
+        #order-success-msg h2 { color: var(--success); margin-bottom: 1rem; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo"><span>G</span> Graz Groupe</div>
-    <nav><button onclick="openCart()">Košík (<span id="cart-count">0</span>)</button></nav>
+    <div class="header-right">
+        <div class="help-notice">Při potížích kontaktujte vedení ➔</div>
+        <nav>
+            <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
+            <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
+            <button class="cart-btn" onclick="openCart()">Košík <span class="cart-badge" id="cart-count">0</span></button>
+        </nav>
+    </div>
 </header>
 
 <main>
     <div id="tab-suroviny" class="tab-content active"><div id="grid-suroviny" class="grid"></div></div>
+    <div id="tab-vyrobky" class="tab-content"><div id="grid-vyrobky" class="grid"></div></div>
 </main>
 
 <div id="cart-modal" class="modal-overlay">
     <div class="modal">
         <button class="close-btn" onclick="closeCart()">✕</button>
         
-        <!-- Obsah košíku -->
         <div id="cart-content">
-            <h2 style="color: var(--primary);">Váš košík</h2>
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Váš košík</h2>
             <div id="cart-items"></div>
             <button id="checkout-btn" class="submit-btn" onclick="showCheckoutForm()">Přejít k pokladně</button>
         </div>
 
-        <!-- Formulář -->
         <form id="checkout-form" class="hidden" onsubmit="submitOrder(event)">
-            <input type="text" id="fname" placeholder="Jméno" required style="width:100%; padding: 0.5rem; margin-bottom: 0.5rem;">
-            <input type="text" id="lname" placeholder="Příjmení" required style="width:100%; padding: 0.5rem; margin-bottom: 0.5rem;">
-            <input type="text" id="postic" placeholder="post.ic" required style="width:100%; padding: 0.5rem; margin-bottom: 0.5rem;">
-            <input type="text" id="phone" placeholder="Telefon" required style="width:100%; padding: 0.5rem; margin-bottom: 1rem;">
+            <div class="order-number-large" id="order-num-top"></div>
+            <div class="form-grid">
+                <input type="text" id="fname" placeholder="Jméno" required>
+                <input type="text" id="lname" placeholder="Příjmení" required>
+                <input type="text" id="postic" placeholder="post.ic" required>
+                <input type="text" id="phone" placeholder="Telefon" required>
+            </div>
             <button type="submit" class="submit-btn">Závazně objednat</button>
         </form>
 
-        <!-- Úspěšná zpráva -->
-        <div id="order-success-msg" class="success-box hidden">
-            <h2>Objednávka úspěšně zaslána!</h2>
+        <div id="order-success-msg" class="hidden">
+            <h2>Objednávka úspěšně zaslána</h2>
             <p>V případě storna kontaktujte: <strong>noemi.graziani@post.ic</strong></p>
-            <p style="margin-top: 1rem;">Vaše číslo objednávky je: <br><strong id="final-order-num" style="font-size: 1.5rem; color: var(--primary);"></strong></p>
+            <p style="margin-top: 15px;">Vaše číslo objednávky je: <br><strong id="final-order-num" style="font-size: 1.5rem; color: var(--primary);"></strong></p>
         </div>
     </div>
 </div>
 
 <script>
-    const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
+    const DISCORD_WEBHOOK = 'SEM_VLOZ_ODKAZ'; // Zde vlož svůj odkaz
+    const produkty = [
+        { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 45 },
+        { id: 5, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5 }
+    ];
+
     let cart = [];
     let currentOrderNumber = '';
 
+    function switchTab(type) { /* Logika záložek */ }
     function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
     function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
-    
     function showCheckoutForm() {
         document.getElementById('cart-content').classList.add('hidden');
         document.getElementById('checkout-form').classList.remove('hidden');
+        currentOrderNumber = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('order-num-top').innerText = currentOrderNumber;
     }
 
     async function submitOrder(e) {
         e.preventDefault();
-        currentOrderNumber = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
+        // ... zde probíhá odesílání na Discord ...
         
-        // Zde probíhá fetch na Discord... (původní kód)
-        
-        // Po úspěchu:
+        // Po úspěšném odeslání:
         document.getElementById('checkout-form').classList.add('hidden');
         document.getElementById('order-success-msg').classList.remove('hidden');
         document.getElementById('final-order-num').innerText = currentOrderNumber;
         
-        cart = []; // Vyprázdnit košík
+        cart = [];
         document.getElementById('cart-count').innerText = '0';
     }
 </script>
