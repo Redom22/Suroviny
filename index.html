@@ -5,62 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obchod | Suroviny a Výrobky</title>
     <style>
+        /* Modrobílý moderní design - proměnné */
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg: #f8fafc;
-            --text: #0f172a;
+            --primary: #1e40af; /* Tmavší modrá */
+            --primary-light: #3b82f6; /* Světlejší modrá */
+            --bg: #f0f5f9; /* Velmi světlá modro-šedá pro pozadí */
             --card-bg: #ffffff;
-            --success: #16a34a;
-            --danger: #dc2626;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); }
-        
-        header { background-color: var(--card-bg); padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        nav button { background: none; border: none; font-size: 1rem; padding: 0.5rem 1rem; margin: 0 0.25rem; cursor: pointer; border-radius: 0.5rem; transition: background 0.2s; }
-        nav button:hover { background: var(--bg); }
-        nav button.active { background: var(--primary); color: white; }
-        .cart-btn { background: var(--text); color: white; font-weight: bold; }
-        .cart-btn:hover { background: #334155; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
 
-        main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+        /* Hlavička a navigace */
+        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .logo span { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 1rem; }
         
-        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border); display: flex; flex-direction: column; }
-        .card h3 { margin-bottom: 0.5rem; }
-        .price { font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; }
-        .status { font-weight: 600; margin-bottom: 1rem; }
+        nav { display: flex; gap: 0.5rem; align-items: center; }
+        nav button { background: transparent; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; transition: all 0.3s; }
+        nav button:hover { background: #e0f2fe; color: var(--primary); }
+        nav button.active { background: var(--primary); color: white; }
+        
+        .cart-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--primary-light) !important; color: white !important; }
+        .cart-btn:hover { background: var(--primary) !important; }
+        .cart-icon { width: 20px; height: 20px; fill: currentColor; }
+        .cart-badge { background: white; color: var(--primary); padding: 0.1rem 0.4rem; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+
+        /* Hlavní obsah */
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mřížka produktů */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; transition: transform 0.2s; border-top: 4px solid var(--primary-light); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .price { font-size: 1.4rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.5rem; }
+        .status { font-weight: 600; font-size: 0.95rem; margin-bottom: 1.5rem; }
         .status.available { color: var(--success); }
         .status.sold-out { color: var(--danger); }
-        
-        .controls { display: flex; gap: 0.5rem; margin-top: auto; }
-        .controls input { width: 60px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.5rem; }
-        .controls button { flex: 1; background: var(--primary); color: white; border: none; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-        .controls button:hover { background: var(--primary-hover); }
-        .controls button:disabled { background: #94a3b8; cursor: not-allowed; }
 
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 1rem; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .controls { display: flex; gap: 0.5rem; margin-top: auto; }
+        .controls input { width: 70px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; text-align: center; font-weight: bold; outline: none; }
+        .controls input:focus { border-color: var(--primary); }
+        .controls button { flex: 1; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .controls button:hover:not(:disabled) { background: var(--primary-light); }
+        .controls button:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+
+        /* Vedení */
+        .vedeni-box { background: white; max-width: 600px; margin: 0 auto; padding: 3rem; border-radius: 12px; text-align: center; border-top: 5px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .vedeni-box h2 { color: var(--primary); margin-bottom: 1.5rem; font-size: 2rem; }
+        .vedeni-info p { font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-main); }
+        .vedeni-info span { font-weight: bold; color: var(--primary); }
+
+        /* Modal Košík */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 16px; width: 90%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s; }
+        .close-btn:hover { background: var(--danger); color: white; }
+
+        .order-number-large { font-size: 1.8rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg); border-radius: 8px; border: 2px dashed var(--primary-light); }
         
-        .cart-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-        .cart-total { font-size: 1.25rem; font-weight: bold; text-align: right; margin-top: 1rem; }
+        .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--border); font-size: 1.1rem; }
+        .cart-item-name { font-weight: 600; }
         
-        form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
-        form input[type="text"], form input[type="tel"] { padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; width: 100%; }
-        .radio-group { border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; }
-        .radio-group h4 { margin-bottom: 0.5rem; }
-        .radio-option { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        form { margin-top: 2rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .form-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+        form input[type="text"] { padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
+        form input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .option-card { border: 2px solid var(--border); padding: 1rem; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .option-card:hover { border-color: var(--primary-light); }
+        .option-card input { margin-right: 0.5rem; }
+        .option-title { font-weight: bold; margin-bottom: 0.5rem; color: var(--primary); }
+
+        .bank-info { background: #e0f2fe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 1.5rem; display: none; }
         
-        .bank-info { background: #e0f2fe; padding: 1rem; border-radius: 0.5rem; margin-top: 0.5rem; font-size: 0.9rem; display: none; }
-        
-        .submit-btn { background: var(--success); color: white; border: none; padding: 1rem; border-radius: 0.5rem; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1rem; }
-        .submit-btn:hover { background: #15803d; }
+        .summary-box { background: var(--bg); padding: 1.5rem; border-radius: 8px; margin-top: 1rem; text-align: right; }
+        .summary-order-num { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .summary-total { font-size: 2rem; font-weight: 900; color: var(--primary); }
+
+        .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1.2rem; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: 0.3s; }
+        .submit-btn:hover { background: #059669; transform: translateY(-2px); }
 
         .hidden { display: none !important; }
     </style>
@@ -68,116 +105,186 @@
 <body>
 
 <header>
-    <div class="logo">Obchod</div>
+    <div class="logo"><span>B</span> Obchod</div>
     <nav>
         <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
         <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
-        <button class="cart-btn" onclick="openCart()">Košík (<span id="cart-count">0</span>)</button>
+        <button id="btn-vedeni" onclick="switchTab('vedeni')">Vedení</button>
+        <button class="cart-btn" onclick="openCart()">
+            <!-- Ikona košíku -->
+            <svg class="cart-icon" viewBox="0 0 24 24">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span class="cart-badge" id="cart-count">0</span>
+        </button>
     </nav>
 </header>
 
 <main>
-    <div id="products-grid" class="grid">
+    <!-- Záložka Suroviny -->
+    <div id="tab-suroviny" class="tab-content active">
+        <div id="grid-suroviny" class="grid"></div>
+    </div>
+
+    <!-- Záložka Výrobky -->
+    <div id="tab-vyrobky" class="tab-content">
+        <div id="grid-vyrobky" class="grid"></div>
+    </div>
+
+    <!-- Záložka Vedení -->
+    <div id="tab-vedeni" class="tab-content">
+        <div class="vedeni-box">
+            <h2>Vedení společnosti</h2>
+            <div class="vedeni-info">
+                <p><span>Majitel:</span> Noemi Graziani</p>
+                <p><span>post.ic:</span> noemi.graziani@post.ic</p>
+                <p><span>Telefon:</span> +420 123 456 789</p>
+            </div>
         </div>
+    </div>
 </main>
 
+<!-- Modální okno košíku -->
 <div id="cart-modal" class="modal-overlay">
     <div class="modal">
-        <button class="close-btn" onclick="closeCart()">&times;</button>
-        <h2 style="margin-bottom: 1rem;">Váš košík</h2>
+        <button class="close-btn" onclick="closeCart()">✕</button>
         
-        <div id="cart-items"></div>
-        <div class="cart-total">Mezisoučet: <span id="cart-subtotal">0</span> $</div>
+        <div id="cart-content">
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Váš košík</h2>
+            <div id="cart-items"></div>
+            <div style="text-align: right; margin-top: 1rem; font-size: 1.2rem;">
+                Mezisoučet: <strong style="color: var(--primary);"><span id="cart-subtotal">0</span> $</strong>
+            </div>
+            
+            <div id="empty-cart-msg" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                Váš košík je zatím prázdný.
+            </div>
+            
+            <button id="checkout-btn" class="submit-btn hidden" onclick="showCheckoutForm()">Přejít k pokladně</button>
+        </div>
 
         <form id="checkout-form" class="hidden" onsubmit="submitOrder(event)">
-            <h3>Dodací údaje</h3>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">Číslo objednávky: <strong id="order-number-display"></strong></p>
-            
-            <input type="text" id="fname" placeholder="Jméno" required>
-            <input type="text" id="lname" placeholder="Příjmení" required>
-            <input type="text" id="zip" placeholder="PSČ" required>
-            <input type="tel" id="phone" placeholder="Telefon" required>
+            <div class="order-number-large" id="order-num-top"></div>
 
-            <div class="radio-group">
-                <h4>Doručení</h4>
-                <label class="radio-option">
-                    <input type="radio" name="shipping" value="normal" checked onchange="updateTotal()">
-                    Normální (do 98 hodin) - Zdarma
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="shipping" value="express" onchange="updateTotal()">
-                    Expresní (do 48 hodin) - + 20 000 $
-                </label>
-            </div>
-
-            <div class="radio-group">
-                <h4>Platba</h4>
-                <label class="radio-option">
-                    <input type="radio" name="payment" value="bank" checked onchange="toggleBankInfo(); updateTotal()">
-                    Bankovní převod - Zdarma
-                </label>
-                <div id="bank-instructions" class="bank-info" style="display: block;">
-                    Plaťte na jméno: <strong>Noemi Graziani</strong><br>
-                    Do poznámky k platbě vložte číslo vaší objednávky.
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Jméno</label>
+                    <input type="text" id="fname" required>
                 </div>
-                <label class="radio-option">
-                    <input type="radio" name="payment" value="cash" onchange="toggleBankInfo(); updateTotal()">
-                    Hotově - Příplatek 10 000 $
-                </label>
+                <div class="form-group">
+                    <label>Příjmení</label>
+                    <input type="text" id="lname" required>
+                </div>
+                <div class="form-group">
+                    <label>post.ic</label>
+                    <input type="text" id="postic" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="text" id="phone" required>
+                </div>
             </div>
 
-            <div class="cart-total" style="color: var(--primary);">Celková cena: <span id="cart-final-total">0</span> $</div>
+            <div class="options-grid">
+                <!-- Doručení -->
+                <div>
+                    <h3 class="option-title">Doručení</h3>
+                    <label class="option-card" style="display: block; margin-bottom: 0.5rem;">
+                        <input type="radio" name="shipping" value="normal" checked onchange="updateTotal()">
+                        Normální (do 98h) - Zdarma
+                    </label>
+                    <label class="option-card" style="display: block;">
+                        <input type="radio" name="shipping" value="express" onchange="updateTotal()">
+                        Expresní (do 48h) - + 20 000 $
+                    </label>
+                </div>
+                
+                <!-- Platba -->
+                <div>
+                    <h3 class="option-title">Platba</h3>
+                    <label class="option-card" style="display: block; margin-bottom: 0.5rem;">
+                        <input type="radio" name="payment" value="bank" checked onchange="toggleBankInfo(); updateTotal()">
+                        Bankovní převod - Zdarma
+                    </label>
+                    <label class="option-card" style="display: block;">
+                        <input type="radio" name="payment" value="cash" onchange="toggleBankInfo(); updateTotal()">
+                        Hotově - + 10 000 $
+                    </label>
+                </div>
+            </div>
+
+            <div id="bank-instructions" class="bank-info" style="display: block;">
+                <strong>Instrukce k platbě:</strong><br>
+                Plaťte na jméno: <strong>Noemi Graziani</strong><br>
+                Do poznámky k platbě vložte <strong>číslo vaší objednávky</strong>.
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-order-num">Číslo objednávky: <strong id="order-num-bottom"></strong></div>
+                <div>Celková cena: <div class="summary-total"><span id="cart-final-total">0</span> $</div></div>
+            </div>
             
             <button type="submit" class="submit-btn">Závazně objednat</button>
         </form>
-        
-        <div id="empty-cart-msg">Váš košík je zatím prázdný.</div>
-        <button id="checkout-btn" class="submit-btn hidden" style="width: 100%;" onclick="showCheckoutForm()">Přejít k pokladně</button>
     </div>
 </div>
 
 <script>
-    // --- NASTAVENÍ: ZDE VLOŽ SVŮJ DISCORD WEBHOOK URL ---
-    const DISCORD_WEBHOOK_URL = 'ZDE_VLOZ_TVUJ_DISCORD_WEBHOOK_URL';
+    // ==========================================
+    // NASTAVENÍ: ZDE VLOŽ SVŮJ DISCORD WEBHOOK URL
+    // ==========================================
+    const DISCORD_WEBHOOK = 'ZDE_VLOZ_SVUJ_WEBHOOK';
 
-    // DATABÁZE PRODUKTŮ (Nastavuješ si sám)
-    const db = [
-        // Suroviny
-        { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 50, available: true },
-        { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120, available: true },
-        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0, available: false },
-        // Výrobky
-        { id: 4, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5, available: true },
-        { id: 5, name: 'Dřevěná židle', type: 'vyrobky', price: 2500, stock: 10, available: true },
-        { id: 6, name: 'Zlatý prsten', type: 'vyrobky', price: 45000, stock: 0, available: false }
+    // ==========================================
+    // DATABÁZE PRODUKTŮ (Lehké přidávání)
+    // type: 'suroviny' nebo 'vyrobky'
+    // stock: počet kusů. Pokud dáš 0, automaticky bude vyprodáno.
+    // ==========================================
+    const produkty = [
+        // --- SUROVINY ---
+        { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 50 },
+        { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
+        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 }, // Ukázka vyprodaného
+        { id: 4, name: 'Měď', type: 'suroviny', price: 2100, stock: 30 },
+        
+        // --- VÝROBKY ---
+        { id: 5, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5 },
+        { id: 6, name: 'Dřevěná židle', type: 'vyrobky', price: 2500, stock: 10 },
+        { id: 7, name: 'Zlatý prsten', type: 'vyrobky', price: 45000, stock: 0 } // Ukázka vyprodaného
     ];
 
     let cart = [];
     let currentOrderNumber = '';
-    let currentTab = 'suroviny';
 
-    function init() {
-        renderProducts();
+    // Inicializace webu
+    window.onload = () => {
+        renderProducts('suroviny');
+        renderProducts('vyrobky');
+    };
+
+    // Přepínání záložek
+    function switchTab(tabName) {
+        // Tlačítka
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${tabName}`).classList.add('active');
+        
+        // Obsah
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
     }
 
-    function switchTab(tab) {
-        currentTab = tab;
-        document.getElementById('btn-suroviny').classList.remove('active');
-        document.getElementById('btn-vyrobky').classList.remove('active');
-        document.getElementById(`btn-${tab}`).classList.add('active');
-        renderProducts();
-    }
-
-    function renderProducts() {
-        const grid = document.getElementById('products-grid');
+    // Vykreslení produktů do mřížky
+    function renderProducts(type) {
+        const grid = document.getElementById(`grid-${type}`);
         grid.innerHTML = '';
         
-        const filtered = db.filter(p => p.type === currentTab);
+        const items = produkty.filter(p => p.type === type);
         
-        filtered.forEach(product => {
-            const statusClass = product.available && product.stock > 0 ? 'available' : 'sold-out';
-            const statusText = product.available && product.stock > 0 ? `K dispozici: ${product.stock} ks` : 'Vyprodáno';
-            const disabled = (!product.available || product.stock <= 0) ? 'disabled' : '';
+        items.forEach(product => {
+            const isAvailable = product.stock > 0;
+            const statusClass = isAvailable ? 'available' : 'sold-out';
+            const statusText = isAvailable ? `K dispozici: ${product.stock} ks` : 'Vyprodáno';
+            const disabled = !isAvailable ? 'disabled' : '';
 
             grid.innerHTML += `
                 <div class="card">
@@ -186,44 +293,38 @@
                     <div class="status ${statusClass}">${statusText}</div>
                     <div class="controls">
                         <input type="number" id="qty-${product.id}" min="1" max="${product.stock}" value="1" ${disabled}>
-                        <button onclick="addToCart(${product.id})" ${disabled}>Koupit</button>
+                        <button onclick="addToCart(${product.id})" ${disabled}>Do košíku</button>
                     </div>
                 </div>
             `;
         });
     }
 
+    // Přidání do košíku
     function addToCart(id) {
-        const product = db.find(p => p.id === id);
+        const product = produkty.find(p => p.id === id);
         const qtyInput = document.getElementById(`qty-${id}`);
         let qty = parseInt(qtyInput.value);
 
-        if (isNaN(qty) || qty <= 0) {
-            alert('Zadejte platný počet kusů.'); return;
-        }
-        if (qty > product.stock) {
-            alert(`Nelze koupit víc než je k dispozici (${product.stock} ks).`); return;
-        }
+        if (isNaN(qty) || qty <= 0) return alert('Zadejte platný počet.');
+        if (qty > product.stock) return alert(`K dispozici je pouze ${product.stock} ks.`);
 
-        const existingItem = cart.find(item => item.product.id === id);
-        if (existingItem) {
-            if (existingItem.qty + qty > product.stock) {
-                alert('Tímto překročíte dostupné zásoby!'); return;
-            }
-            existingItem.qty += qty;
+        const existing = cart.find(item => item.product.id === id);
+        if (existing) {
+            if (existing.qty + qty > product.stock) return alert('Překročíte dostupné zásoby!');
+            existing.qty += qty;
         } else {
             cart.push({ product, qty });
         }
 
-        // Aktualizace zásoby lokálně (pro zobrazení)
-        product.stock -= qty;
-        if(product.stock === 0) product.available = false;
-        
+        product.stock -= qty; // Odečtení ze skladu na webu
         qtyInput.value = 1;
+        
         updateCartCount();
-        renderProducts();
+        renderProducts(product.type); // Překreslí jen záložku, kde se nakoupilo
     }
 
+    // Aktualizace čísla u ikonky košíku
     function updateCartCount() {
         const count = cart.reduce((sum, item) => sum + item.qty, 0);
         document.getElementById('cart-count').innerText = count;
@@ -233,25 +334,27 @@
         return cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
     }
 
+    // Otevření okna košíku
     function openCart() {
         document.getElementById('cart-modal').style.display = 'flex';
+        document.getElementById('cart-content').classList.remove('hidden');
+        document.getElementById('checkout-form').classList.add('hidden');
+        
         const itemsDiv = document.getElementById('cart-items');
         itemsDiv.innerHTML = '';
         
         if (cart.length === 0) {
             document.getElementById('empty-cart-msg').classList.remove('hidden');
             document.getElementById('checkout-btn').classList.add('hidden');
-            document.getElementById('checkout-form').classList.add('hidden');
             document.getElementById('cart-subtotal').innerText = '0';
         } else {
             document.getElementById('empty-cart-msg').classList.add('hidden');
             document.getElementById('checkout-btn').classList.remove('hidden');
-            document.getElementById('checkout-form').classList.add('hidden');
             
             cart.forEach(item => {
                 itemsDiv.innerHTML += `
                     <div class="cart-item">
-                        <span>${item.qty}x ${item.product.name}</span>
+                        <span class="cart-item-name">${item.qty}x ${item.product.name}</span>
                         <span>${(item.product.price * item.qty).toLocaleString()} $</span>
                     </div>
                 `;
@@ -262,28 +365,24 @@
 
     function closeCart() {
         document.getElementById('cart-modal').style.display = 'none';
-        document.getElementById('checkout-form').classList.add('hidden');
     }
 
+    // Zobrazení formuláře pro dokončení
     function showCheckoutForm() {
-        document.getElementById('checkout-btn').classList.add('hidden');
+        document.getElementById('cart-content').classList.add('hidden');
         document.getElementById('checkout-form').classList.remove('hidden');
         
-        // Vygenerování čísla objednávky
-        currentOrderNumber = 'OBJ' + Math.floor(Math.random() * 1000000);
-        document.getElementById('order-number-display').innerText = currentOrderNumber;
+        // Vygenerování velkého čísla objednávky
+        currentOrderNumber = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('order-num-top').innerText = currentOrderNumber;
+        document.getElementById('order-num-bottom').innerText = currentOrderNumber;
         
         updateTotal();
     }
 
     function toggleBankInfo() {
         const payment = document.querySelector('input[name="payment"]:checked').value;
-        const bankInfo = document.getElementById('bank-instructions');
-        if(payment === 'bank') {
-            bankInfo.style.display = 'block';
-        } else {
-            bankInfo.style.display = 'none';
-        }
+        document.getElementById('bank-instructions').style.display = payment === 'bank' ? 'block' : 'none';
     }
 
     function updateTotal() {
@@ -298,95 +397,71 @@
         return total;
     }
 
+    // Odeslání na Discord
     async function submitOrder(e) {
         e.preventDefault();
         
-        if (DISCORD_WEBHOOK_URL === 'ZDE_VLOZ_TVUJ_DISCORD_WEBHOOK_URL') {
-            alert('CHYBA: Není nastaven Discord Webhook ve skriptu!');
+        if (DISCORD_WEBHOOK === 'ZDE_VLOZ_SVUJ_WEBHOOK') {
+            alert('Nejprve musíte vložit svůj Discord Webhook odkaz do kódu!');
             return;
         }
 
         const fname = document.getElementById('fname').value;
         const lname = document.getElementById('lname').value;
-        const zip = document.getElementById('zip').value;
+        const postic = document.getElementById('postic').value;
         const phone = document.getElementById('phone').value;
         
-        const shippingVal = document.querySelector('input[name="shipping"]:checked').value;
-        const paymentVal = document.querySelector('input[name="payment"]:checked').value;
+        const shipVal = document.querySelector('input[name="shipping"]:checked').value;
+        const payVal = document.querySelector('input[name="payment"]:checked').value;
 
-        const shippingText = shippingVal === 'express' ? 'Expresní (+ 20 000 $)' : 'Normální (Zdarma)';
-        const paymentText = paymentVal === 'cash' ? 'Hotově (+ 10 000 $)' : 'Bankovní převod (Zdarma)';
+        const shipText = shipVal === 'express' ? 'Expresní (+20k $)' : 'Normální (Zdarma)';
+        const payText = payVal === 'cash' ? 'Hotově (+10k $)' : 'Bankovní převod (Zdarma)';
         const finalPrice = updateTotal();
 
-        // Příprava seznamu produktů pro Discord
         let itemsString = '';
         cart.forEach(item => {
-            itemsString += `• ${item.qty}x ${item.product.name} (${(item.product.price * item.qty).toLocaleString()} $)\n`;
+            itemsString += `• **${item.qty}x** ${item.product.name} - ${(item.product.price * item.qty).toLocaleString()} $\n`;
         });
 
-        // Vytvoření Discord Embed objektu ("Tabulky")
+        // Tabulka / Embed pro Discord
         const payload = {
-            username: "Nový Zákazník",
-            embeds: [
-                {
-                    title: `📦 Nová objednávka: ${currentOrderNumber}`,
-                    color: 3066993, // Zelená-modrá barva
-                    fields: [
-                        {
-                            name: "👤 Kontakt",
-                            value: `**Jméno:** ${fname} ${lname}\n**Telefon:** ${phone}\n**PSČ:** ${zip}`,
-                            inline: false
-                        },
-                        {
-                            name: "🚚 Doprava",
-                            value: shippingText,
-                            inline: true
-                        },
-                        {
-                            name: "💳 Platba",
-                            value: paymentText,
-                            inline: true
-                        },
-                        {
-                            name: "🛒 Objednané položky",
-                            value: itemsString,
-                            inline: false
-                        },
-                        {
-                            name: "💰 Celková cena",
-                            value: `**${finalPrice.toLocaleString()} $**`,
-                            inline: false
-                        }
-                    ],
-                    timestamp: new Date().toISOString()
-                }
-            ]
+            username: "Obchod Systém",
+            embeds: [{
+                title: `🛒 Nová objednávka: ${currentOrderNumber}`,
+                color: 1982639, // Modrá barva
+                fields: [
+                    { name: "👤 Zákazník", value: `**Jméno:** ${fname} ${lname}\n**post.ic:** ${postic}\n**Tel:** ${phone}`, inline: false },
+                    { name: "🚚 Doručení", value: shipText, inline: true },
+                    { name: "💳 Platba", value: payText, inline: true },
+                    { name: "📦 Zakoupené položky", value: itemsString || "Žádné", inline: false },
+                    { name: "💰 Celková cena k úhradě", value: `**${finalPrice.toLocaleString()} $**`, inline: false }
+                ],
+                footer: { text: "Vytvořeno automaticky z webu" },
+                timestamp: new Date().toISOString()
+            }]
         };
 
-        // Odeslání na Discord
         try {
-            const response = await fetch(DISCORD_WEBHOOK_URL, {
+            const response = await fetch(DISCORD_WEBHOOK, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
             if(response.ok) {
-                alert('Objednávka byla úspěšně odeslána!');
-                cart = []; // Vyprázdnění košíku
+                alert(`Objednávka ${currentOrderNumber} odeslána!`);
+                cart = [];
                 updateCartCount();
+                renderProducts('suroviny');
+                renderProducts('vyrobky');
                 closeCart();
             } else {
-                alert('Došlo k chybě při odesílání na Discord.');
+                alert('Chyba při odesílání na Discord.');
             }
         } catch (error) {
-            console.error(error);
-            alert('Došlo k chybě připojení k Discordu.');
+            alert('Nelze se spojit s Discordem.');
         }
     }
-
-    // Spuštění po načtení
-    window.onload = init;
 </script>
 
 </body>
