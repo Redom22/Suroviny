@@ -89,7 +89,6 @@
         
         form { margin-top: 2rem; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
         .form-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
         form input[type="text"] { padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
@@ -157,8 +156,8 @@
             <h2>Vedení společnosti</h2>
             <div class="vedeni-info">
                 <p><span>Majitelka:</span> Noemi Graziani</p>
-                <p><span>post.ic:</span> noemi.gradient@post.ic</p>
-                <p><span>Telefon:</span> 123 456 789</p>
+                <p><span>post.ic:</span> noemi.graziani@post.ic</p>
+                <p><span>Telefon:</span> 000 000 000</p>
             </div>
         </div>
     </div>
@@ -262,7 +261,7 @@
     // ==========================================
     const produkty = [
         // --- SUROVINY ---
-        { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 50 },
+        { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 45 },
         { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
         { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 },
         { id: 4, name: 'Měď', type: 'suroviny', price: 2100, stock: 30 },
@@ -325,7 +324,6 @@
 
         const existing = cart.find(item => item.product.id === id);
         if (existing) {
-            if (existing.qty + qty > product.stock) return alert('Překročíte dostupné zásoby!');
             existing.qty += qty;
         } else {
             cart.push({ product, qty });
