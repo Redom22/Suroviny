@@ -167,7 +167,7 @@
             <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Váš košík</h2>
             <div id="cart-items"></div>
             <div style="text-align: right; margin-top: 1rem; font-size: 1.2rem;">
-                Mezisoučet: <strong style="color: var(--primary);"><span id="cart-subtotal">0</span> $</strong>
+                Mezisoučet: <strong style="color: var(--primary);"><span id="cart-subtotal">0</span> kč</strong>
             </div>
             
             <div id="empty-cart-msg" style="text-align: center; padding: 2rem; color: var(--text-muted);">
@@ -208,7 +208,7 @@
                     </label>
                     <label class="option-card" style="display: block;">
                         <input type="radio" name="shipping" value="express" onchange="updateTotal()">
-                        Expresní (do 48h) - + 20 000 $
+                        Expresní (do 48h) - + 20 000 kč
                     </label>
                 </div>
                 
@@ -220,7 +220,7 @@
                     </label>
                     <label class="option-card" style="display: block;">
                         <input type="radio" name="payment" value="cash" onchange="toggleBankInfo(); updateTotal()">
-                        Hotově - + 10 000 $
+                        Hotově - + 10 000 kč
                     </label>
                 </div>
             </div>
@@ -233,7 +233,7 @@
 
             <div class="summary-box">
                 <div class="summary-order-num">Číslo objednávky: <strong id="order-num-bottom"></strong></div>
-                <div>Celková cena: <div class="summary-total"><span id="cart-final-total">0</span> $</div></div>
+                <div>Celková cena: <div class="summary-total"><span id="cart-final-total">0</span> kč</div></div>
             </div>
             
             <button type="submit" class="submit-btn">Závazně objednat</button>
@@ -303,7 +303,7 @@
             grid.innerHTML += `
                 <div class="card">
                     <h3>${product.name}</h3>
-                    <div class="price">kč{product.price.toLocaleString()} $</div>
+                    <div class="price">${product.price.toLocaleString()} kč</div>
                     <div class="status ${statusClass}">${statusText}</div>
                     <div class="controls">
                         <input type="number" id="qty-${product.id}" min="1" max="${product.stock}" value="1" ${disabled}>
@@ -365,7 +365,7 @@
                 itemsDiv.innerHTML += `
                     <div class="cart-item">
                         <span class="cart-item-name">${item.qty}x ${item.product.name}</span>
-                        <span>${(item.product.price * item.qty).toLocaleString()} $</span>
+                        <span>${(item.product.price * item.qty).toLocaleString()} kč</span>
                     </div>
                 `;
             });
@@ -439,7 +439,7 @@
                     { name: "🚚 Doručení", value: shipText, inline: true },
                     { name: "💳 Platba", value: payText, inline: true },
                     { name: "📦 Zakoupené položky", value: itemsString || "Žádné", inline: false },
-                    { name: "💰 Celková cena k úhradě", value: `**${finalPrice.toLocaleString()} $**`, inline: false }
+                    { name: "💰 Celková cena k úhradě", value: `**${finalPrice.toLocaleString()} kč**`, inline: false }
                 ],
                 footer: { text: "Graz Groupe automatický systém" },
                 timestamp: new Date().toISOString()
