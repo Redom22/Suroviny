@@ -5,176 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graz Groupe | Suroviny a Výrobky</title>
     <style>
-        /* ... (zůstává původní CSS) ... */
-        :root {
-            --primary: #1e40af; --primary-light: #3b82f6; --bg: #f0f5f9;
-            --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
-            --border: #e2e8f0; --success: #10b981; --danger: #ef4444;
-        }
+        :root { --primary: #1e40af; --primary-light: #3b82f6; --bg: #f0f5f9; --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; --success: #10b981; --danger: #ef4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
-        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); gap: 1rem; flex-wrap: wrap; }
-        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; text-transform: uppercase; letter-spacing: -0.5px; }
-        .logo span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 0.3rem 0.9rem; border-radius: 8px; font-size: 1.5rem; font-weight: 900; box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2); }
-        .header-right { display: flex; align-items: center; gap: 1.5rem; }
-        .help-notice { font-size: 0.85rem; font-weight: 600; color: var(--primary); background: #e0f2fe; padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #bae6fd; display: flex; align-items: center; gap: 0.5rem; animation: arrowPulse 1.5s infinite ease-in-out; }
-        @keyframes arrowPulse { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
-        nav { display: flex; gap: 0.5rem; align-items: center; }
-        nav button { background: transparent; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; transition: all 0.3s; }
-        nav button:hover { background: #e0f2fe; color: var(--primary); }
+        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; text-transform: uppercase; }
+        .logo span { background: var(--primary); color: white; padding: 0.3rem 0.9rem; border-radius: 8px; }
+        nav { display: flex; gap: 0.5rem; }
+        nav button { background: transparent; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; }
         nav button.active { background: var(--primary); color: white; }
-        .cart-btn { display: flex; align-items: center; gap: 0.5rem; background: var(--primary-light) !important; color: white !important; }
-        .cart-icon { width: 20px; height: 20px; fill: currentColor; }
-        .cart-badge { background: white; color: var(--primary); padding: 0.1rem 0.4rem; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
         main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; transition: transform 0.2s; border-top: 4px solid var(--primary-light); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .card h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.5rem; }
-        .price { font-size: 1.4rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.5rem; }
-        .status { font-weight: 600; font-size: 0.95rem; margin-bottom: 1.5rem; }
-        .status.available { color: var(--success); }
-        .status.sold-out { color: var(--danger); }
-        .controls { display: flex; gap: 0.5rem; margin-top: auto; }
-        .controls input { width: 70px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; text-align: center; font-weight: bold; outline: none; }
-        .controls button { flex: 1; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .vedeni-box { background: white; max-width: 600px; margin: 0 auto; padding: 3rem; border-radius: 12px; text-align: center; border-top: 5px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .vedeni-box h2 { color: var(--primary); margin-bottom: 1.5rem; font-size: 2rem; }
-        .vedeni-info p { font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-main); }
-        .vedeni-info span { font-weight: bold; color: var(--primary); }
+        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 16px; width: 90%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--bg); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s; }
-        .close-btn:hover { background: var(--danger); color: white; }
-        .order-number-large { font-size: 1.8rem; font-weight: 900; color: var(--primary); text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg); border-radius: 8px; border: 2px dashed var(--primary-light); }
-        .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--border); font-size: 1.1rem; }
-        form { margin-top: 2rem; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
-        .form-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
-        form input[type="text"] { padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .option-card { border: 2px solid var(--border); padding: 1rem; border-radius: 8px; cursor: pointer; }
-        .bank-info { background: #e0f2fe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 1.5rem; }
-        .summary-box { background: var(--bg); padding: 1.5rem; border-radius: 8px; margin-top: 1rem; text-align: right; }
-        .summary-total { font-size: 2rem; font-weight: 900; color: var(--primary); }
-        .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1.2rem; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 16px; width: 90%; max-width: 600px; position: relative; }
+        .success-msg { text-align: center; padding: 2rem; }
+        .order-number-large { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin: 1rem 0; padding: 1rem; background: var(--bg); border: 2px dashed var(--primary); }
         .hidden { display: none !important; }
-        
-        /* Nový styl pro potvrzení */
-        .success-box { text-align: center; padding: 2rem; }
-        .success-box h2 { color: var(--success); margin-bottom: 1rem; }
-        .success-box p { margin-bottom: 1rem; }
+        .submit-btn { width: 100%; background: var(--success); color: white; border: none; padding: 1rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; }
+        form input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 8px; }
     </style>
 </head>
 <body>
 
-<!-- (Původní hlavička a main obsah ponechán) -->
 <header>
     <div class="logo"><span>G</span> Graz Groupe</div>
-    <div class="header-right">
-        <div class="help-notice">Při potížích kontaktujte vedení ➔</div>
-        <nav>
-            <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
-            <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
-            <button id="btn-vedeni" onclick="switchTab('vedeni')">Vedení</button>
-            <button class="cart-btn" onclick="openCart()">
-                <svg class="cart-icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                <span class="cart-badge" id="cart-count">0</span>
-            </button>
-        </nav>
-    </div>
+    <nav>
+        <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
+        <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
+        <button class="cart-btn" onclick="openCart()">Košík (<span id="cart-count">0</span>)</button>
+    </nav>
 </header>
 
 <main>
     <div id="tab-suroviny" class="tab-content active"><div id="grid-suroviny" class="grid"></div></div>
     <div id="tab-vyrobky" class="tab-content"><div id="grid-vyrobky" class="grid"></div></div>
-    <div id="tab-vedeni" class="tab-content">
-        <div class="vedeni-box">
-            <h2>Vedení společnosti</h2>
-            <div class="vedeni-info">
-                <p><span>Majitelka:</span> Noemi Graziani</p>
-                <p><span>post.ic:</span> noemi.graziani@post.ic</p>
-                <p><span>Telefon:</span> 123 456 789</p>
-            </div>
-        </div>
-    </div>
 </main>
 
 <div id="cart-modal" class="modal-overlay">
     <div class="modal">
-        <button class="close-btn" onclick="closeCart()">✕</button>
-        
-        <!-- Původní obsah košíku -->
         <div id="cart-content">
-            <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Váš košík</h2>
+            <h2>Košík</h2>
             <div id="cart-items"></div>
-            <div style="text-align: right; margin-top: 1rem; font-size: 1.2rem;">Mezisoučet: <strong style="color: var(--primary);"><span id="cart-subtotal">0</span> $</strong></div>
-            <div id="empty-cart-msg" style="text-align: center; padding: 2rem; color: var(--text-muted);">Váš košík je zatím prázdný.</div>
-            <button id="checkout-btn" class="submit-btn hidden" onclick="showCheckoutForm()">Přejít k pokladně</button>
+            <button id="checkout-btn" class="submit-btn" onclick="showCheckoutForm()">Přejít k pokladně</button>
         </div>
-
-        <!-- Formulář -->
         <form id="checkout-form" class="hidden" onsubmit="submitOrder(event)">
-            <!-- ... (zde zůstává celý formulář stejný jako v původním kódu) ... -->
-            <div class="order-number-large" id="order-num-top"></div>
-            <div class="form-grid">
-                <div class="form-group"><label>Jméno</label><input type="text" id="fname" required></div>
-                <div class="form-group"><label>Příjmení</label><input type="text" id="lname" required></div>
-                <div class="form-group"><label>post.ic</label><input type="text" id="postic" required></div>
-                <div class="form-group"><label>Telefon</label><input type="text" id="phone" required></div>
-            </div>
-            <div class="options-grid">
-                <div><h3 class="option-title">Doručení</h3><label class="option-card"><input type="radio" name="shipping" value="normal" checked> Normální - Zdarma</label><label class="option-card"><input type="radio" name="shipping" value="express"> Expresní - +20k $</label></div>
-                <div><h3 class="option-title">Platba</h3><label class="option-card"><input type="radio" name="payment" value="bank" checked> Bankovní převod</label><label class="option-card"><input type="radio" name="payment" value="cash"> Hotově - +10k $</label></div>
-            </div>
+            <h3>Objednávka</h3>
+            <input type="text" id="fname" placeholder="Jméno" required>
+            <input type="text" id="lname" placeholder="Příjmení" required>
+            <input type="text" id="postic" placeholder="post.ic" required>
+            <input type="text" id="phone" placeholder="Telefon" required>
             <button type="submit" class="submit-btn">Závazně objednat</button>
         </form>
-
-        <!-- NOVÁ SEKCE PRO ÚSPĚCH -->
-        <div id="success-message" class="hidden success-box">
-            <h2>Objednávka úspěšně zaslána!</h2>
-            <p>V případě storna kontaktujte <br><strong>noemi.graziani@post.ic</strong></p>
+        <div id="success-message" class="hidden success-msg">
+            <h2 style="color: var(--success);">Objednávka úspěšně zaslána!</h2>
+            <p>V případě storna kontaktujte: <strong>noemi.graziani@post.ic</strong></p>
             <div class="order-number-large" id="final-order-num"></div>
-            <button class="submit-btn" onclick="closeCart()">Zavřít</button>
+            <button class="submit-btn" onclick="location.reload()">Zavřít</button>
         </div>
     </div>
 </div>
 
 <script>
+    // VLOŽ SEM SVŮJ WEBHOOK
     const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
+
     const produkty = [
         { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 45 },
         { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
-        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 },
-        { id: 4, name: 'Měď', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 5, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5 },
-        { id: 6, name: 'Dřevěná židle', type: 'vyrobky', price: 2500, stock: 10 },
-        { id: 7, name: 'Zlatý prsten', type: 'vyrobky', price: 45000, stock: 0 }
+        { id: 5, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5 }
     ];
     let cart = [];
     let currentOrderNumber = '';
 
-    // ... (ostatní funkce renderProducts, switchTab atd. ponechány) ...
-    window.onload = () => { renderProducts('suroviny'); renderProducts('vyrobky'); };
-    function switchTab(t) { document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); document.getElementById('tab-'+t).classList.add('active'); }
+    function switchTab(t) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + t).classList.add('active');
+    }
+
+    function renderProducts(type) {
+        const grid = document.getElementById(`grid-${type}`);
+        grid.innerHTML = produkty.filter(p => p.type === type).map(p => `
+            <div class="card">
+                <h3>${p.name}</h3>
+                <p>${p.price} $</p>
+                <button onclick="addToCart(${p.id})">Do košíku</button>
+            </div>
+        `).join('');
+    }
+
+    function addToCart(id) {
+        const p = produkty.find(p => p.id === id);
+        cart.push({ product: p, qty: 1 });
+        document.getElementById('cart-count').innerText = cart.length;
+    }
+
     function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
-    function closeCart() { document.getElementById('cart-modal').style.display = 'none'; location.reload(); } // Refresh pro vyčištění stavu
+    function showCheckoutForm() {
+        currentOrderNumber = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('cart-content').classList.add('hidden');
+        document.getElementById('checkout-form').classList.remove('hidden');
+    }
 
     async function submitOrder(e) {
         e.preventDefault();
-        // ... (kód pro odeslání na Discord ponechán stejný) ...
-        
-        // Změna: Místo alert() zobrazíme success-message
-        document.getElementById('checkout-form').classList.add('hidden');
-        document.getElementById('success-message').classList.remove('hidden');
-        document.getElementById('final-order-num').innerText = "Vaše číslo objednávky je: " + currentOrderNumber;
+        const payload = {
+            embeds: [{
+                title: "Nová objednávka: " + currentOrderNumber,
+                fields: [{ name: "Zákazník", value: document.getElementById('fname').value + " " + document.getElementById('lname').value }]
+            }]
+        };
+
+        try {
+            const res = await fetch(DISCORD_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok || res.status === 204) {
+                document.getElementById('checkout-form').classList.add('hidden');
+                document.getElementById('success-message').classList.remove('hidden');
+                document.getElementById('final-order-num').innerText = "Vaše číslo objednávky je: " + currentOrderNumber;
+            } else {
+                alert('Chyba při odesílání.');
+            }
+        } catch (err) {
+            alert('Nelze odeslat objednávku.');
+        }
     }
 
-    // (Doplň chybějící pomocné funkce jako v původním souboru)
+    renderProducts('suroviny');
+    renderProducts('vyrobky');
 </script>
 </body>
 </html>
