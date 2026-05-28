@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obchod | Suroviny a Výrobky</title>
+    <title>Graz Groupe | Suroviny a Výrobky</title>
     <style>
         /* Modrobílý moderní design - proměnné */
         :root {
@@ -22,10 +22,20 @@
         body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
 
         /* Hlavička a navigace */
-        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-        .logo span { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 1rem; }
+        header { background: var(--card-bg); padding: 1rem 5%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid var(--primary); gap: 1rem; flex-wrap: wrap; }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.6rem; text-transform: uppercase; letter-spacing: -0.5px; }
+        .logo span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 0.3rem 0.9rem; border-radius: 8px; font-size: 1.5rem; font-weight: 900; box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2); }
         
+        .header-right { display: flex; align-items: center; gap: 1.5rem; }
+        
+        /* Upozornění se šipkou k vedení */
+        .help-notice { font-size: 0.85rem; font-weight: 600; color: var(--primary); background: #e0f2fe; padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #bae6fd; display: flex; align-items: center; gap: 0.5rem; animation: arrowPulse 1.5s infinite ease-in-out; }
+        
+        @keyframes arrowPulse {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+        }
+
         nav { display: flex; gap: 0.5rem; align-items: center; }
         nav button { background: transparent; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 0.5rem 1rem; cursor: pointer; border-radius: 6px; transition: all 0.3s; }
         nav button:hover { background: #e0f2fe; color: var(--primary); }
@@ -79,6 +89,7 @@
         
         form { margin-top: 2rem; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
         .form-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
         form input[type="text"] { padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
@@ -100,24 +111,33 @@
         .submit-btn:hover { background: #059669; transform: translateY(-2px); }
 
         .hidden { display: none !important; }
+
+        /* Responzivita pro menší obrazovky */
+        @media (max-width: 768px) {
+            header { justify-content: center; flex-direction: column; text-align: center; }
+            .header-right { flex-direction: column; gap: 0.5rem; }
+            .form-grid, .options-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo"><span>B</span> Obchod</div>
-    <nav>
-        <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
-        <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
-        <button id="btn-vedeni" onclick="switchTab('vedeni')">Vedení</button>
-        <button class="cart-btn" onclick="openCart()">
-            <!-- Ikona košíku -->
-            <svg class="cart-icon" viewBox="0 0 24 24">
-                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-            <span class="cart-badge" id="cart-count">0</span>
-        </button>
-    </nav>
+    <div class="logo"><span>G</span> Graz Groupe</div>
+    <div class="header-right">
+        <div class="help-notice">Při potížích kontaktujte vedení ➔</div>
+        <nav>
+            <button id="btn-suroviny" class="active" onclick="switchTab('suroviny')">Suroviny</button>
+            <button id="btn-vyrobky" onclick="switchTab('vyrobky')">Výrobky</button>
+            <button id="btn-vedeni" onclick="switchTab('vedeni')">Vedení</button>
+            <button class="cart-btn" onclick="openCart()">
+                <svg class="cart-icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </nav>
+    </div>
 </header>
 
 <main>
@@ -136,9 +156,9 @@
         <div class="vedeni-box">
             <h2>Vedení společnosti</h2>
             <div class="vedeni-info">
-                <p><span>Majitel:</span> Noemi Graziani</p>
-                <p><span>post.ic:</span> noemi.graziani@post.ic</p>
-                <p><span>Telefon:</span> +420 123 456 789</p>
+                <p><span>Majitelka:</span> Noemi Graziani</p>
+                <p><span>post.ic:</span> noemi.gradient@post.ic</p>
+                <p><span>Telefon:</span> 123 456 789</p>
             </div>
         </div>
     </div>
@@ -244,36 +264,31 @@
         // --- SUROVINY ---
         { id: 1, name: 'Železná ruda', type: 'suroviny', price: 1500, stock: 50 },
         { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
-        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 }, // Ukázka vyprodaného
+        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 },
         { id: 4, name: 'Měď', type: 'suroviny', price: 2100, stock: 30 },
         
         // --- VÝROBKY ---
         { id: 5, name: 'Ocelový meč', type: 'vyrobky', price: 15000, stock: 5 },
         { id: 6, name: 'Dřevěná židle', type: 'vyrobky', price: 2500, stock: 10 },
-        { id: 7, name: 'Zlatý prsten', type: 'vyrobky', price: 45000, stock: 0 } // Ukázka vyprodaného
+        { id: 7, name: 'Zlatý prsten', type: 'vyrobky', price: 45000, stock: 0 }
     ];
 
     let cart = [];
     let currentOrderNumber = '';
 
-    // Inicializace webu
     window.onload = () => {
         renderProducts('suroviny');
         renderProducts('vyrobky');
     };
 
-    // Přepínání záložek
     function switchTab(tabName) {
-        // Tlačítka
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`btn-${tabName}`).classList.add('active');
         
-        // Obsah
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.getElementById(`tab-${tabName}`).classList.add('active');
     }
 
-    // Vykreslení produktů do mřížky
     function renderProducts(type) {
         const grid = document.getElementById(`grid-${type}`);
         grid.innerHTML = '';
@@ -300,7 +315,6 @@
         });
     }
 
-    // Přidání do košíku
     function addToCart(id) {
         const product = produkty.find(p => p.id === id);
         const qtyInput = document.getElementById(`qty-${id}`);
@@ -317,14 +331,13 @@
             cart.push({ product, qty });
         }
 
-        product.stock -= qty; // Odečtení ze skladu na webu
+        product.stock -= qty;
         qtyInput.value = 1;
         
         updateCartCount();
-        renderProducts(product.type); // Překreslí jen záložku, kde se nakoupilo
+        renderProducts(product.type);
     }
 
-    // Aktualizace čísla u ikonky košíku
     function updateCartCount() {
         const count = cart.reduce((sum, item) => sum + item.qty, 0);
         document.getElementById('cart-count').innerText = count;
@@ -334,7 +347,6 @@
         return cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
     }
 
-    // Otevření okna košíku
     function openCart() {
         document.getElementById('cart-modal').style.display = 'flex';
         document.getElementById('cart-content').classList.remove('hidden');
@@ -367,12 +379,10 @@
         document.getElementById('cart-modal').style.display = 'none';
     }
 
-    // Zobrazení formuláře pro dokončení
     function showCheckoutForm() {
         document.getElementById('cart-content').classList.add('hidden');
         document.getElementById('checkout-form').classList.remove('hidden');
         
-        // Vygenerování velkého čísla objednávky
         currentOrderNumber = 'OBJ-' + Math.floor(100000 + Math.random() * 900000);
         document.getElementById('order-num-top').innerText = currentOrderNumber;
         document.getElementById('order-num-bottom').innerText = currentOrderNumber;
@@ -397,7 +407,6 @@
         return total;
     }
 
-    // Odeslání na Discord
     async function submitOrder(e) {
         e.preventDefault();
         
@@ -423,12 +432,11 @@
             itemsString += `• **${item.qty}x** ${item.product.name} - ${(item.product.price * item.qty).toLocaleString()} $\n`;
         });
 
-        // Tabulka / Embed pro Discord
         const payload = {
-            username: "Obchod Systém",
+            username: "Graz Groupe - Obchod",
             embeds: [{
                 title: `🛒 Nová objednávka: ${currentOrderNumber}`,
-                color: 1982639, // Modrá barva
+                color: 1982639,
                 fields: [
                     { name: "👤 Zákazník", value: `**Jméno:** ${fname} ${lname}\n**post.ic:** ${postic}\n**Tel:** ${phone}`, inline: false },
                     { name: "🚚 Doručení", value: shipText, inline: true },
@@ -436,7 +444,7 @@
                     { name: "📦 Zakoupené položky", value: itemsString || "Žádné", inline: false },
                     { name: "💰 Celková cena k úhradě", value: `**${finalPrice.toLocaleString()} $**`, inline: false }
                 ],
-                footer: { text: "Vytvořeno automaticky z webu" },
+                footer: { text: "Graz Groupe automatický systém" },
                 timestamp: new Date().toISOString()
             }]
         };
@@ -449,7 +457,7 @@
             });
 
             if(response.ok) {
-                alert(`Objednávka ${currentOrderNumber} odeslána!`);
+                alert(`Objednávka ${currentOrderNumber} byla úspěšně odeslána!`);
                 cart = [];
                 updateCartCount();
                 renderProducts('suroviny');
