@@ -139,14 +139,17 @@
 </header>
 
 <main>
+    <!-- Záložka Suroviny -->
     <div id="tab-suroviny" class="tab-content active">
         <div id="grid-suroviny" class="grid"></div>
     </div>
 
+    <!-- Záložka Výrobky -->
     <div id="tab-vyrobky" class="tab-content">
         <div id="grid-vyrobky" class="grid"></div>
     </div>
 
+    <!-- Záložka Vedení -->
     <div id="tab-vedeni" class="tab-content">
         <div class="vedeni-box">
             <h2>Vedení společnosti</h2>
@@ -159,6 +162,7 @@
     </div>
 </main>
 
+<!-- Modální okno košíku -->
 <div id="cart-modal" class="modal-overlay">
     <div class="modal">
         <button class="close-btn" onclick="closeCart()">✕</button>
@@ -200,6 +204,7 @@
             </div>
 
             <div class="options-grid">
+                <!-- Doručení -->
                 <div>
                     <h3 class="option-title">Doručení</h3>
                     <label class="option-card" style="display: block; margin-bottom: 0.5rem;">
@@ -212,6 +217,7 @@
                     </label>
                 </div>
                 
+                <!-- Platba -->
                 <div>
                     <h3 class="option-title">Platba</h3>
                     <label class="option-card" style="display: block; margin-bottom: 0.5rem;">
@@ -394,10 +400,6 @@
 
     async function submitOrder(e) {
         e.preventDefault();
-        
-        if (!DISCORD_WEBHOOK || DISCORD_WEBHOOK === 'SEM_VLOZ_SVOJ_WEBHOOK') {
-            return; // Pokud webhook chybí, tiše ukončí skript bez chybového okna
-        }
 
         const fname = document.getElementById('fname').value;
         const lname = document.getElementById('lname').value;
@@ -447,9 +449,11 @@
                 renderProducts('suroviny');
                 renderProducts('vyrobky');
                 closeCart();
+            } else {
+                alert('Chyba při odesílání na Discord. Zkontroluj, zda je webhook v kódu správně vložený.');
             }
         } catch (error) {
-            // Tichá chyba, na webu nic nevyskočí
+            alert('Nelze odeslat objednávku. Zkontroluj připojení nebo funkčnost webhooku.');
         }
     }
 </script>
