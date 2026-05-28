@@ -252,7 +252,7 @@
     // ==========================================
     // NASTAVENÍ: ZDE VLOŽ SVŮJ DISCORD WEBHOOK URL
     // ==========================================
-    const DISCORD_WEBHOOK = 'ZDE_VLOZ_SVUJ_WEBHOOK';
+    const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
 
     // ==========================================
     // DATABÁZE PRODUKTŮ (Lehké přidávání)
@@ -408,7 +408,7 @@
     async function submitOrder(e) {
         e.preventDefault();
         
-        if (DISCORD_WEBHOOK === 'ZDE_VLOZ_SVUJ_WEBHOOK') {
+        if (DISCORD_WEBHOOK === 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3') {
             alert('Nejprve musíte vložit svůj Discord Webhook odkaz do kódu!');
             return;
         }
