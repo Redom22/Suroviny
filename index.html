@@ -215,7 +215,7 @@
                     </label>
                     <label class="option-card" style="display: block;">
                         <input type="radio" name="shipping" value="express" onchange="updateTotal()">
-                        Expresní (do 48h) - + 20 000 Kč
+                        Expresní (do 48h) - + 50 000 Kč
                     </label>
                 </div>
                 
@@ -227,7 +227,7 @@
                     </label>
                     <label class="option-card" style="display: block;">
                         <input type="radio" name="payment" value="cash" onchange="toggleBankInfo(); updateTotal()">
-                        Hotově - + 10 000 Kč
+                        Hotově - + 15 000 Kč
                     </label>
                 </div>
             </div>
@@ -269,20 +269,20 @@
     const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
 
     const produkty = [
-        { id: 1, name: 'Železo', type: 'suroviny', price: 1999, stock: 45 },
-        { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
+        { id: 1, name: 'Železo', type: 'suroviny', price: 1999, stock: 0 },
+        { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 0 },
         { id: 3, name: 'Uhlí', type: 'suroviny', price: 2500, stock: 0 },
-        { id: 4, name: 'Měď', type: 'suroviny', price: 2500, stock: 30 },
-        { id: 5, name: 'Zinek', type: 'suroviny', price: 3000, stock: 30 },
-        { id: 6, name: 'Zlato', type: 'suroviny', price: 30000, stock: 30 },
-        { id: 7, name: 'Ocel', type: 'suroviny', price: 2600, stock: 30 },
-        { id: 8, name: 'Cín', type: 'suroviny', price: 15000, stock: 30 },
-        { id: 9, name: 'Ledek', type: 'suroviny', price: 8000, stock: 30 },
-        { id: 10, name: 'Síra', type: 'suroviny', price: 3000, stock: 30 },
-        { id: 11, name: 'Hliník', type: 'suroviny', price: 2999, stock: 30 },
+        { id: 4, name: 'Měď', type: 'suroviny', price: 2500, stock: 0 },
+        { id: 5, name: 'Zinek', type: 'suroviny', price: 3000, stock: 0 },
+        { id: 6, name: 'Zlato', type: 'suroviny', price: 30000, stock: 0 },
+        { id: 7, name: 'Ocel', type: 'suroviny', price: 2600, stock: 0 },
+        { id: 8, name: 'Cín', type: 'suroviny', price: 15000, stock: 0 },
+        { id: 9, name: 'Ledek', type: 'suroviny', price: 8000, stock: 0 },
+        { id: 10, name: 'Síra', type: 'suroviny', price: 3000, stock: 0 },
+        { id: 11, name: 'Hliník', type: 'suroviny', price: 2999, stock: 0 },
         
-        { id: 12, name: 'Ozubené kolo', type: 'vyrobky', price: 8000, stock: 5 },
-        { id: 13, name: 'Pružina', type: 'vyrobky', price: 7000, stock: 10 },
+        { id: 12, name: 'Ozubené kolo', type: 'vyrobky', price: 8000, stock: 0 },
+        { id: 13, name: 'Pružina', type: 'vyrobky', price: 7000, stock: 0 },
         { id: 14, name: 'Hřebíky', type: 'vyrobky', price: 2500, stock: 0 },
         { id: 15, name: 'Šroubky', type: 'vyrobky', price: 3000, stock: 0 },
         { id: 16, name: 'Taser', type: 'vyrobky', price: 70000, stock: 0 },
