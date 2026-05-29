@@ -7,9 +7,9 @@
     <style>
         /* Modrobílý moderní design - proměnné */
         :root {
-            --primary: #1e40af; /* Tmavší modrá */
-            --primary-light: #3b82f6; /* Světlejší modrá */
-            --bg: #f0f5f9; /* Velmi světlá modro-šedá pro pozadí */
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --bg: #f0f5f9;
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -242,12 +242,8 @@
 </div>
 
 <script>
-    // ========================================================
-    // TADY JEDNOU VLOŽ SVŮJ DISCORD WEBHOOK ODKAZ MEZI UVOZOVKY:
-    // ========================================================
     const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
 
-    // DATABÁZE PRODUKTŮ
     const produkty = [
         { id: 1, name: 'Železo', type: 'suroviny', price: 1500, stock: 45 },
         { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
@@ -269,13 +265,35 @@
         { id: 17, name: 'Výboje do taseru', type: 'vyrobky', price: 45000, stock: 0 },
         { id: 18, name: 'Motorová pila', type: 'vyrobky', price: 45000, stock: 0 },
         { id: 19, name: 'Vysílačka M2', type: 'vyrobky', price: 45000, stock: 0 },
-       
     ];
 
     let cart = [];
     let currentOrderNumber = '';
 
+    // ======= NOVÉ: Funkce pro uložení a načtení skladu ========
+    function loadSavedStock() {
+        const savedData = localStorage.getItem('graz_stock');
+        if (savedData) {
+            const parsedStock = JSON.parse(savedData);
+            produkty.forEach(p => {
+                if (parsedStock[p.id] !== undefined) {
+                    p.stock = parsedStock[p.id]; // Přepíše výchozí stock tím uloženým
+                }
+            });
+        }
+    }
+
+    function saveCurrentStock() {
+        const stockData = {};
+        produkty.forEach(p => {
+            stockData[p.id] = p.stock;
+        });
+        localStorage.setItem('graz_stock', JSON.stringify(stockData));
+    }
+    // ==========================================================
+
     window.onload = () => {
+        loadSavedStock(); // Načte paměť po zapnutí stránky
         renderProducts('suroviny');
         renderProducts('vyrobky');
     };
@@ -409,7 +427,7 @@
         e.preventDefault();
         
         if (!DISCORD_WEBHOOK || DISCORD_WEBHOOK === 'SEM_VLOZ_SVOJ_WEBHOOK') {
-            return; // Pokud webhook chybí, tiše ukončí skript bez chybového okna
+            return; 
         }
 
         const fname = document.getElementById('fname').value;
@@ -420,13 +438,13 @@
         const shipVal = document.querySelector('input[name="shipping"]:checked').value;
         const payVal = document.querySelector('input[name="payment"]:checked').value;
 
-        const shipText = shipVal === 'express' ? 'Expresní (+20k $)' : 'Normální (Zdarma)';
-        const payText = payVal === 'cash' ? 'Hotově (+10k $)' : 'Bankovní převod (Zdarma)';
+        const shipText = shipVal === 'express' ? 'Expresní (+20k Kč)' : 'Normální (Zdarma)';
+        const payText = payVal === 'cash' ? 'Hotově (+10k Kč)' : 'Bankovní převod (Zdarma)';
         const finalPrice = updateTotal();
 
         let itemsString = '';
         cart.forEach(item => {
-            itemsString += `• **${item.qty}x** ${item.product.name} - ${(item.product.price * item.qty).toLocaleString()} $\n`;
+            itemsString += `• **${item.qty}x** ${item.product.name} - ${(item.product.price * item.qty).toLocaleString()} Kč\n`;
         });
 
         const payload = {
@@ -455,6 +473,7 @@
 
             if(response.ok) {
                 alert(`Objednávka ${currentOrderNumber} byla úspěšně odeslána!`);
+                saveCurrentStock(); // <--- ZDE SE ULOŽÍ NOVÝ STAV SKLADU DO PAMĚTI
                 cart = [];
                 updateCartCount();
                 renderProducts('suroviny');
@@ -462,7 +481,7 @@
                 closeCart();
             }
         } catch (error) {
-            // Tichá chyba, na webu nic nevyskočí
+            // Tichá chyba
         }
     }
 </script>
