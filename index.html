@@ -168,7 +168,6 @@
     <div class="modal">
         <button class="close-btn" onclick="closeCart()">✕</button>
         
-        <!-- OBSAH KOŠÍKU -->
         <div id="cart-content">
             <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Váš košík</h2>
             <div id="cart-items"></div>
@@ -183,7 +182,6 @@
             <button id="checkout-btn" class="submit-btn hidden" onclick="showCheckoutForm()">Přejít k pokladně</button>
         </div>
 
-        <!-- FORMULÁŘ POKLADNY -->
         <form id="checkout-form" class="hidden" onsubmit="submitOrder(event)">
             <div class="order-number-large" id="order-num-top"></div>
 
@@ -246,7 +244,6 @@
             <button type="submit" class="submit-btn">Závazně objednat</button>
         </form>
 
-        <!-- NOVÉ: GRAFICKÉ ROZHRANÍ DOKONČENÉ OBJEDNÁVKY -->
         <div id="success-content" class="hidden" style="text-align: center; padding: 1.5rem 0.5rem;">
             <div class="success-checkmark">✓</div>
             <h2 class="success-box-title">Dokončená objednávka</h2>
@@ -294,24 +291,30 @@
     let cart = [];
     let currentOrderNumber = '';
 
+    // NOVÁ LOGIKA: Odčítáme pouze to, co už se prokazatelně prodalo
     function loadSavedStock() {
-        const savedData = localStorage.getItem('graz_stock');
+        const savedData = localStorage.getItem('graz_sold');
         if (savedData) {
-            const parsedStock = JSON.parse(savedData);
+            const parsedSold = JSON.parse(savedData);
             produkty.forEach(p => {
-                if (parsedStock[p.id] !== undefined) {
-                    p.stock = parsedStock[p.id];
+                if (parsedSold[p.id] !== undefined) {
+                    p.stock = p.stock - parsedSold[p.id];
+                    if (p.stock < 0) p.stock = 0; // Pojistka pro případ úpravy na nižší počet
                 }
             });
         }
     }
 
+    // NOVÁ LOGIKA: Ukládáme si pouze historii prodaných kusů
     function saveCurrentStock() {
-        const stockData = {};
-        produkty.forEach(p => {
-            stockData[p.id] = p.stock;
+        let soldData = JSON.parse(localStorage.getItem('graz_sold') || '{}');
+        cart.forEach(item => {
+            if (!soldData[item.product.id]) {
+                soldData[item.product.id] = 0;
+            }
+            soldData[item.product.id] += item.qty;
         });
-        localStorage.setItem('graz_stock', JSON.stringify(stockData));
+        localStorage.setItem('graz_sold', JSON.stringify(soldData));
     }
 
     window.onload = () => {
