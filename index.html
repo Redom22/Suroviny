@@ -291,30 +291,38 @@
     let cart = [];
     let currentOrderNumber = '';
 
-    // NOVÁ LOGIKA: Odčítáme pouze to, co už se prokazatelně prodalo
+    // CHYTRÁ LOGIKA: Sledujeme základní nastavení. Pokud v kódu změníš stav, web to pozná.
     function loadSavedStock() {
-        const savedData = localStorage.getItem('graz_sold');
-        if (savedData) {
-            const parsedSold = JSON.parse(savedData);
-            produkty.forEach(p => {
-                if (parsedSold[p.id] !== undefined) {
-                    p.stock = p.stock - parsedSold[p.id];
-                    if (p.stock < 0) p.stock = 0; // Pojistka pro případ úpravy na nižší počet
+        let tracker = JSON.parse(localStorage.getItem('graz_tracker') || '{}');
+
+        produkty.forEach(p => {
+            if (tracker[p.id]) {
+                // Pokud je základní číslo v kódu stejné jako minule, odečteme prodeje
+                if (tracker[p.id].base === p.stock) {
+                    p.stock = p.stock - tracker[p.id].sold;
+                    if (p.stock < 0) p.stock = 0;
+                } else {
+                    // Pokud jsi v kódu číslo změnil (doskladnil jsi), začínáme od nuly
+                    tracker[p.id] = { base: p.stock, sold: 0 };
                 }
-            });
-        }
+            } else {
+                // Úplně poprvé ukládáme základ
+                tracker[p.id] = { base: p.stock, sold: 0 };
+            }
+        });
+
+        localStorage.setItem('graz_tracker', JSON.stringify(tracker));
     }
 
-    // NOVÁ LOGIKA: Ukládáme si pouze historii prodaných kusů
+    // Uložení aktuálních nákupů
     function saveCurrentStock() {
-        let soldData = JSON.parse(localStorage.getItem('graz_sold') || '{}');
+        let tracker = JSON.parse(localStorage.getItem('graz_tracker') || '{}');
         cart.forEach(item => {
-            if (!soldData[item.product.id]) {
-                soldData[item.product.id] = 0;
+            if (tracker[item.product.id]) {
+                tracker[item.product.id].sold += item.qty;
             }
-            soldData[item.product.id] += item.qty;
         });
-        localStorage.setItem('graz_sold', JSON.stringify(soldData));
+        localStorage.setItem('graz_tracker', JSON.stringify(tracker));
     }
 
     window.onload = () => {
@@ -392,7 +400,7 @@
         document.getElementById('cart-modal').style.display = 'flex';
         document.getElementById('cart-content').classList.remove('hidden');
         document.getElementById('checkout-form').classList.add('hidden');
-        document.getElementById('success-content').classList.add('hidden'); // Skryje úspěch, pokud otevíráme znovu košík
+        document.getElementById('success-content').classList.add('hidden');
         
         const itemsDiv = document.getElementById('cart-items');
         itemsDiv.innerHTML = '';
