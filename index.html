@@ -269,26 +269,26 @@
     const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
 
     const produkty = [
-        { id: 1, name: 'Železo', type: 'suroviny', price: 1500, stock: 45 },
+        { id: 1, name: 'Železo', type: 'suroviny', price: 1999, stock: 45 },
         { id: 2, name: 'Dřevo', type: 'suroviny', price: 800, stock: 120 },
-        { id: 3, name: 'Uhlí', type: 'suroviny', price: 500, stock: 0 },
-        { id: 4, name: 'Měď', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 5, name: 'Zinek', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 6, name: 'Zlato', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 7, name: 'Ocel', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 8, name: 'Cín', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 9, name: 'Ledek', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 10, name: 'Síra', type: 'suroviny', price: 2100, stock: 30 },
-        { id: 11, name: 'Hliník', type: 'suroviny', price: 2100, stock: 30 },
+        { id: 3, name: 'Uhlí', type: 'suroviny', price: 2500, stock: 0 },
+        { id: 4, name: 'Měď', type: 'suroviny', price: 2500, stock: 30 },
+        { id: 5, name: 'Zinek', type: 'suroviny', price: 3000, stock: 30 },
+        { id: 6, name: 'Zlato', type: 'suroviny', price: 30000, stock: 30 },
+        { id: 7, name: 'Ocel', type: 'suroviny', price: 2600, stock: 30 },
+        { id: 8, name: 'Cín', type: 'suroviny', price: 15000, stock: 30 },
+        { id: 9, name: 'Ledek', type: 'suroviny', price: 8000, stock: 30 },
+        { id: 10, name: 'Síra', type: 'suroviny', price: 3000, stock: 30 },
+        { id: 11, name: 'Hliník', type: 'suroviny', price: 2999, stock: 30 },
         
-        { id: 12, name: 'Ozubené kolo', type: 'vyrobky', price: 15000, stock: 5 },
-        { id: 13, name: 'Pružina', type: 'vyrobky', price: 2500, stock: 10 },
-        { id: 14, name: 'Hřebíky', type: 'vyrobky', price: 45000, stock: 0 },
-        { id: 15, name: 'Šroubky', type: 'vyrobky', price: 45000, stock: 0 },
-        { id: 16, name: 'Taser', type: 'vyrobky', price: 45000, stock: 0 },
+        { id: 12, name: 'Ozubené kolo', type: 'vyrobky', price: 8000, stock: 5 },
+        { id: 13, name: 'Pružina', type: 'vyrobky', price: 7000, stock: 10 },
+        { id: 14, name: 'Hřebíky', type: 'vyrobky', price: 2500, stock: 0 },
+        { id: 15, name: 'Šroubky', type: 'vyrobky', price: 3000, stock: 0 },
+        { id: 16, name: 'Taser', type: 'vyrobky', price: 70000, stock: 0 },
         { id: 17, name: 'Výboje do taseru', type: 'vyrobky', price: 45000, stock: 0 },
-        { id: 18, name: 'Motorová pila', type: 'vyrobky', price: 45000, stock: 0 },
-        { id: 19, name: 'Vysílačka M2', type: 'vyrobky', price: 45000, stock: 0 },
+        { id: 18, name: 'Motorová pila', type: 'vyrobky', price: 35000, stock: 0 },
+        { id: 19, name: 'Vysílačka M2', type: 'vyrobky', price: 900000, stock: 0 },
     ];
 
     let cart = [];
@@ -439,8 +439,8 @@
         const shipping = document.querySelector('input[name="shipping"]:checked').value;
         const payment = document.querySelector('input[name="payment"]:checked').value;
 
-        if (shipping === 'express') total += 20000;
-        if (payment === 'cash') total += 10000;
+        if (shipping === 'express') total += 50000;
+        if (payment === 'cash') total += 18000;
 
         document.getElementById('cart-final-total').innerText = total.toLocaleString();
         return total;
@@ -461,8 +461,8 @@
         const shipVal = document.querySelector('input[name="shipping"]:checked').value;
         const payVal = document.querySelector('input[name="payment"]:checked').value;
 
-        const shipText = shipVal === 'express' ? 'Expresní (+20k Kč)' : 'Normální (Zdarma)';
-        const payText = payVal === 'cash' ? 'Hotově (+10k Kč)' : 'Bankovní převod (Zdarma)';
+        const shipText = shipVal === 'express' ? 'Expresní (+50k Kč)' : 'Normální (Zdarma)';
+        const payText = payVal === 'cash' ? 'Hotově (+18k Kč)' : 'Bankovní převod (Zdarma)';
         const finalPrice = updateTotal();
 
         let itemsString = '';
