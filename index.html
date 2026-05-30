@@ -290,23 +290,30 @@
 
     let cart = [];
     let currentOrderNumber = '';
+    
+    // ZMĚŇ TOUTO HODNOTU (např. v1.2, v1.3), KDYŽ CHCEŠ VYNUTIT AKTUALIZACI ZÁSOB PRO VŠECHNY UŽIVATELE:
+    const STOCK_VERSION = 'v1.1';
 
-    // CHYTRÁ LOGIKA: Sledujeme základní nastavení. Pokud v kódu změníš stav, web to pozná.
     function loadSavedStock() {
         let tracker = JSON.parse(localStorage.getItem('graz_tracker') || '{}');
+        let currentVersion = localStorage.getItem('graz_version');
+
+        // Pokud verze nesouhlasí, smažeme historii a použijeme čerstvá data z kódu
+        if (currentVersion !== STOCK_VERSION) {
+            localStorage.removeItem('graz_tracker');
+            localStorage.setItem('graz_version', STOCK_VERSION);
+            tracker = {};
+        }
 
         produkty.forEach(p => {
             if (tracker[p.id]) {
-                // Pokud je základní číslo v kódu stejné jako minule, odečteme prodeje
                 if (tracker[p.id].base === p.stock) {
                     p.stock = p.stock - tracker[p.id].sold;
                     if (p.stock < 0) p.stock = 0;
                 } else {
-                    // Pokud jsi v kódu číslo změnil (doskladnil jsi), začínáme od nuly
                     tracker[p.id] = { base: p.stock, sold: 0 };
                 }
             } else {
-                // Úplně poprvé ukládáme základ
                 tracker[p.id] = { base: p.stock, sold: 0 };
             }
         });
