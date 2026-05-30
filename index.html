@@ -260,11 +260,8 @@
     // =========================================================
     const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1509569723355103262/eT2CT_5ezEQ4rrEL-L_C4WTv_-Hq3pxw0ml-5pRuAE-HtHhbbNLhFXE4yqJ_2WP8l7u3';
     
-    // Tyto dva údaje získáš po registraci na JSONBin.io (viz návod níže)
     const BIN_ID = '6a1abbc121f9ee59d29d4fb8'; 
-    const API_KEY = '$2a$10$09NqtvHLMoa2wnPIiL1ZK.giqg8piq4.Du/DJL9GkDMFwHjTOCxZu 
-
-'; 
+    const API_KEY = '$2a$10$09NqtvHLMoa2wnPIiL1ZK.giqg8piq4.Du/DJL9GkDMFwHjTOCxZu'; 
     
     const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
     // =========================================================
@@ -296,7 +293,7 @@
 
     // Načtení dat z JSONBin
     async function loadSavedStock() {
-        if(BIN_ID === 'TVUJ_BIN_ID_ZDE') return; // Zastaví se, dokud to nevyplníš
+        if(BIN_ID === 'TVUJ_BIN_ID_ZDE') return;
 
         try {
             const response = await fetch(JSONBIN_URL, {
@@ -522,7 +519,6 @@
         };
 
         try {
-            // Odeslání na Discord
             if (DISCORD_WEBHOOK) {
                 await fetch(DISCORD_WEBHOOK, {
                     method: 'POST',
@@ -531,13 +527,11 @@
                 });
             }
 
-            // Odečtení ze skladu na JSONBin
             await saveCurrentStock();
             
             cart = [];
             updateCartCount();
             
-            // Načtení nového stavu
             await loadSavedStock();
             
             document.getElementById('checkout-form').classList.add('hidden');
